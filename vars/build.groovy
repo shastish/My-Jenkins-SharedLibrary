@@ -1,19 +1,6 @@
-def java(){
-    echo "Building java project"
-    sh '''
-      mvn clean package
-    '''
-}
-
-def react(){
-  echo "Building React Application"
-  bat """
-    cd /d F:
-    cd F:\\${appName}\\
-    npm run build
-  """
-
-    bat """
-        powershell Compress-Archive -Path "F:\\${appName}\\build\\*" -DestinationPath "F:\\${appName}_${BUILD_NUMBER}.zip"
-    """
+def call(Map params) {
+    if (!params.job) {
+        error "The 'job' parameter is required."
+    }
+    build job: params.job, parameters: params.parameters ?: []
 }
